@@ -1,18 +1,6 @@
-# Install Apache package
-package { 'apache2':
-  ensure => installed,
-}
+# Puppet manifest to fix a bug in wp-setings.php
 
-# Modify Apache configuration file
-file { '/etc/apache2/apache2.conf':
-  ensure  => present,
-  content => template('your_module/apache2.conf.erb'),
-  notify  => Service['apache2'],
-}
-
-# Restart Apache service
-service { 'apache2':
-  ensure  => running,
-  enable  => true,
-  require => Package['apache2'],
+exec { 'fix the php extension issue':
+  command => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
+  path    => '/usr/local/bin/:/bin/'
 }
